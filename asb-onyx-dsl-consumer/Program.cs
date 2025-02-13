@@ -18,6 +18,17 @@ class Program
                     BootstrapServers = secrets.broker_address,
                     GroupId = secrets.consumer_group_id
                 };
+                // Set up the basic Auth if configured
+                if (null != secrets.BasicAuthConfig)
+                {
+                    int idx = secrets.BasicAuthConfig.IndexOf(':');
+                    string user = secrets.BasicAuthConfig.Substring(0, idx);
+                    string password = secrets.BasicAuthConfig.Substring(idx + 1);
+                    config.SecurityProtocol = SecurityProtocol.SaslSsl;
+                    config.SaslMechanism = SaslMechanism.Plain;
+                    config.SaslUsername = user;
+                    config.SaslPassword = password;
+                }
                 Console.WriteLine("Consuming from " + topic + " on " + secrets.broker_address);
             }
         }
