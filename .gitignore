@@ -1,0 +1,7 @@
+﻿################################################################################
+
+/.vs
+/asb-onyx-dsl-consumer/bin/**/*
+/asb-onyx-dsl-consumer/obj/**/*
+*.bak
+/secrets.json

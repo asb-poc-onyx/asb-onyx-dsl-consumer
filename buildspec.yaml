@@ -1,0 +1,11 @@
+# Build and push a docker image from our supplied source and configuration
+version: 0.2
+
+phases:
+  build:
+    commands:
+    - python GetSecret.py $SECRET_ARN
+    - docker build -t asb-onyx-dsl-consumer .
+    - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT.dkr.ecr.ap-southeast-2.amazonaws.com
+    - docker tag asb-onyx-dsl-consumer:latest $AWS_ACCOUNT.dkr.ecr.ap-southeast-2.amazonaws.com/asb-onyx-dsl-consumer-$STAGE:latest
+    - docker push $AWS_ACCOUNT.dkr.ecr.ap-southeast-2.amazonaws.com/asb-onyx-dsl-consumer-$STAGE:latest
